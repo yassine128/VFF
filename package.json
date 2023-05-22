@@ -21,6 +21,7 @@
 	"dependencies": {
 		"bootstrap": "^5.2.3",
 		"dotenv": "^16.0.3",
-		"firebase": "^9.22.0"
+		"firebase": "^9.22.0",
+		"svelte-routing": "^1.8.9"
 	}
 }

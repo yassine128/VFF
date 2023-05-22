@@ -21,17 +21,17 @@
 	        <a class="nav-link" href="/about">About</a>
 	      </li>
 	      <li class="nav-item">
-	        <a class="nav-link" href="">
 	        	{#if $userStore}
-	        		{$userStore.displayName}
+	        	 	<a class="nav-link" href=/profile>{$userStore.displayName}</a>
 	        	{:else}
-	        		<span on:click={loginWithGoogle}>Log-In</span>
+		        	<a class="nav-link" href="">
+		        		<span on:click={loginWithGoogle}>Log-In</span>
+		        	</a>
 	        	{/if}
-	    	</a>
 	      </li>
 	      {#if $userStore}
 	      <li class="nav-item">
-	        <a class="nav-link" href="">
+	        <a class="nav-link" href="/">
 	      		<span on:click={logOut}>Log-Out</span>
 	      	</a>
 	      </li>
