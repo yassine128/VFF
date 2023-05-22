@@ -33,12 +33,10 @@
   	/*
   	 * Logic to check if the user is logged in 
   	 */
-  	let userLoggedIn = false; 
 	onAuthStateChanged(auth, (user) => {
 	  if (user) {
 	    //const uid = user.uid;
 	    userObj = user; 
-	    userLoggedIn = true; 
 	  }
 	});
 
@@ -48,7 +46,7 @@
 	const logOut = () => {
 			signOut(auth).then(() => {
 		  	// Sign-out successful.
-			userLoggedIn = false; 
+			userObj = null; 
 		}).catch((error) => {
 		  	// An error happened.
 			console.log("An Error Occured :(")
@@ -58,7 +56,7 @@
 
 </script>
 
-{#if userLoggedIn}
+{#if userObj}
 	<p>You are logged in as {userObj.displayName}</p>
 	<button on:click={logOut}>Log Out</button>
 {:else}
