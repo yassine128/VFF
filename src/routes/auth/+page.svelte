@@ -1,65 +1,13 @@
-<script type="text/javascript">
-	import * as firebase from 'firebase/app';
-	import {
-	  getAuth, 
-	  GoogleAuthProvider, 
-	  signInWithPopup, 
-	  onAuthStateChanged, 
-	  signOut,
-	} from 'firebase/auth';
-	import { onMount } from 'svelte'; 
-	let userObj; 
-
-	const firebaseConfig = {
-	  // Your Firebase project configuration
-	  apiKey: import.meta.env.VITE_API_KEY,
-	  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
-	  projectId: import.meta.env.VITE_PROJECT_ID,
-	  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
-	  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
-	  appId: import.meta.env.VITE_APP_ID,
-	};
-
-	const app = firebase.initializeApp(firebaseConfig);
-	const auth = getAuth(app);
-
-	/*
-	 * Logic to login/create a user with Gmail
-	 */
-  	const loginWithGoogle = () => {
-  		signInWithPopup(auth, new GoogleAuthProvider()); 
-  	}
-
-  	/*
-  	 * Logic to check if the user is logged in 
-  	 */
-	onAuthStateChanged(auth, (user) => {
-	  if (user) {
-	    //const uid = user.uid;
-	    userObj = user; 
-	  }
-	});
-
-	/*
-	 * Logic to log-out a user 
-	 */
-	const logOut = () => {
-			signOut(auth).then(() => {
-		  	// Sign-out successful.
-			userObj = null; 
-		}).catch((error) => {
-		  	// An error happened.
-			console.log("An Error Occured :(")
-		});
-	}
-
-
+<script>
+  import { userStore, loginWithGoogle, logOut } from '../../firebaseClient.js';
+  import Header  from '../header/+page.svelte'
 </script>
 
-{#if userObj}
-	<p>You are logged in as {userObj.displayName}</p>
-	<button on:click={logOut}>Log Out</button>
+<Header  />
+{#if $userStore}
+  <p>You are logged in as {$userStore.displayName}</p>
+  <button on:click={logOut}>Log Out</button>
 {:else}
-	<p>You are not logged in.</p>
-	<button on:click={loginWithGoogle}>Login with Google</button>
+  <p>You are not logged in.</p>
+  <button on:click={loginWithGoogle}>Login with Google</button>
 {/if}
