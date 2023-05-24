@@ -1,6 +1,8 @@
+<!-- Home Page -->
+
 <script type="text/javascript">
 	import Header  from './header/+page.svelte'
-	import {userStore} from '../firebaseClient.js';
+	import {userStore, addUserDB} from '../firebaseClient.js';
 </script>
 
 <Header />

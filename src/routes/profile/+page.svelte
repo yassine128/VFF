@@ -1,3 +1,10 @@
+<!--
+
+    The profile will need uid | rank | rating 
+
+    The profile page will also have all the user posts under / I will make it another component 
+-->
+
 <script>
 	import Header  from '../header/+page.svelte'
 	import { userStore } from '../../firebaseClient.js'

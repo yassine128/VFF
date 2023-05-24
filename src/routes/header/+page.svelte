@@ -1,5 +1,5 @@
 <script>
-	import {userStore, loginWithGoogle, logOut} from '../../firebaseClient.js';
+	import {userStore, loginWithGoogle, logOut, addUserDB} from '../../firebaseClient.js';
 </script>
 
 <main>
@@ -24,7 +24,7 @@
 	        	{#if $userStore}
 	        	 	<a class="nav-link" href=/profile>{$userStore.displayName}</a>
 	        	{:else}
-		        	<a class="nav-link" href="">
+		        	<a class="nav-link" href="/">
 		        		<span on:click={loginWithGoogle}>Log-In</span>
 		        	</a>
 	        	{/if}

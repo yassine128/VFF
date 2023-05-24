@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
   signOut
 } from 'firebase/auth';
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { writable } from 'svelte/store';
 
@@ -19,6 +20,8 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+let userObj = null; 
+export const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
@@ -26,12 +29,24 @@ const provider = new GoogleAuthProvider();
 export const userStore = writable(null);
 
 // Listen for auth state changes
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, async user => {
   userStore.set(user);
+  userObj = user; 
+  addUserDB();
 });
 
 export const loginWithGoogle = () => {
-  signInWithPopup(auth, provider);
+  signInWithPopup(auth, provider); 
+};
+
+export const addUserDB = async () => {
+  try {
+    const userDocRef = doc(db, "users", userObj.uid);
+    const userDocSnap = await getDoc(userDocRef);
+    if (!userDocSnap.exists()) {
+        const docRef = setDoc(doc(db, "users", userObj.uid), { rank: "unrated", rating: 0 });
+    }
+  } catch (error) {}
 };
 
 export const logOut = () => {

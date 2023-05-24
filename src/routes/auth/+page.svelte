@@ -1,5 +1,5 @@
 <script>
-  import { userStore, loginWithGoogle, logOut } from '../../firebaseClient.js';
+  import { userStore, loginWithGoogle, logOut, db } from '../../firebaseClient.js';
   import Header  from '../header/+page.svelte'
 </script>
 
