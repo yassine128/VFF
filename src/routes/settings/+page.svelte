@@ -1,14 +1,8 @@
 <script>
     import Header from '../header/+page.svelte'
-    import { updateDB, userData } from '../../firebaseClient.js'
-
-    let selectedRank = ""
-
+    import { loadData, updateDB, userData } from '../../firebaseClient.js'
     async function saveRank() {
-      if (selectedRank == ""){
-        selectedRank = $userData[0];
-      }
-      await updateDB(selectedRank);
+      await updateDB($userData[0]);
     }
 </script>
 
@@ -21,9 +15,9 @@
         {$userData[0]}
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" on:click={() => selectedRank = 'Silver'}>Silver</a>
-        <a class="dropdown-item" on:click={() => selectedRank = 'Gold'}>Gold</a>
-        <a class="dropdown-item" on:click={() => selectedRank = 'Plat'}>Plat</a>
+        <a class="dropdown-item" on:click={() => $userData[0] = 'Silver'}>Silver</a>
+        <a class="dropdown-item" on:click={() => $userData[0] = 'Gold'}>Gold</a>
+        <a class="dropdown-item" on:click={() => $userData[0] = 'Plat'}>Plat</a>
       </div>
     </div>
   
