@@ -5,6 +5,9 @@
     let selectedRank = ""
 
     async function saveRank() {
+      if (selectedRank == ""){
+        selectedRank = $userData[0];
+      }
       await updateDB(selectedRank);
     }
 </script>
@@ -12,8 +15,7 @@
 <Header />
 
 <main>
-    <h1>Settings</h1>
-  
+    <h1>Settings</h1>  
     <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         {$userData[0]}
