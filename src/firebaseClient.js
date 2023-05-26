@@ -6,7 +6,7 @@ import {
   onAuthStateChanged,
   signOut
 } from 'firebase/auth';
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { writable } from 'svelte/store';
 
@@ -27,12 +27,14 @@ const provider = new GoogleAuthProvider();
 
 // Create a user store
 export const userStore = writable(null);
+export const userData = writable([]);
 
 // Listen for auth state changes
 onAuthStateChanged(auth, async user => {
   userStore.set(user);
   userObj = user; 
   addUserDB();
+  loadData();
 });
 
 export const loginWithGoogle = () => {
@@ -49,9 +51,32 @@ export const addUserDB = async () => {
   } catch (error) {}
 };
 
+export const loadData = async () => {
+  try {
+    const documentRef = doc(db, 'users', userObj.uid);
+    const docSnap = await getDoc(documentRef);
+
+    if (docSnap.exists()) {
+      userData.set([docSnap.get('rank'), docSnap.get('rating')]);
+    }
+  } catch (error) {}
+}
+
+export const updateDB = async (newRank) => {
+  try {
+    const documentID = userObj.uid;
+    const documentRef = doc(db, 'users', documentID);
+
+    await updateDoc(documentRef, {
+      rank: newRank
+    });    
+  }catch(error){}
+}
+
 export const logOut = () => {
   signOut(auth).then(() => {
     userStore.set(null);
+    userData.set(null);
   }).catch(error => {
     console.error("An error occurred during sign out: ", error);
   });
