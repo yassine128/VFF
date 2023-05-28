@@ -41,12 +41,14 @@ export const loginWithGoogle = () => {
   signInWithPopup(auth, provider); 
 };
 
+
+
 export const addUserDB = async () => {
   try {
     const userDocRef = doc(db, "users", userObj.uid);
     const userDocSnap = await getDoc(userDocRef);
     if (!userDocSnap.exists()) {
-        const docRef = setDoc(doc(db, "users", userObj.uid), { rank: "unrated", rating: 0 });
+        const docRef = setDoc(doc(db, "users", userObj.uid), { rank: "unrated", rating: 0, email: userObj.email, name: userObj.displayName });
     }
   } catch (error) {}
 };
