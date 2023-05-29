@@ -1,5 +1,6 @@
 <script>
-    import Header from '../../header/+page.svelte'
+    import Header from '../../header/+page.svelte';
+    import Comments from '../../comments/+page.svelte';
     import { page } from '$app/stores';
     import { doc, getDoc } from "firebase/firestore";
     import { db } from '../../../firebaseClient.js';
@@ -45,6 +46,7 @@
             <h2>{emailDisplay}</h2>
         </div>
 </div>
+<Comments {userID}/>
 
 <style>
     .profile-container {
