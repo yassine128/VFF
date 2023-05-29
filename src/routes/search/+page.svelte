@@ -35,6 +35,11 @@
       window.removeEventListener('click', handleOutsideClick);
     }
   });
+
+
+  function pageRedirect(page) {
+         window.location.href = page;
+  }
 </script>
 
 <style>
@@ -76,7 +81,7 @@
   <ul id="search-results-container" class="search-results {showResults ? '' : 'hide'}">
     {#each users as user}
       <li>
-        <a href="../profile/{user.id}">{user.name}</a>
+       <a href="../profile/{user.id}">{user.name}</a>
       </li>
     {/each}
   </ul>

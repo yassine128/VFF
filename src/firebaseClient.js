@@ -6,7 +6,7 @@ import {
   onAuthStateChanged,
   signOut
 } from 'firebase/auth';
-import { getFirestore, doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, getDoc, updateDoc, getDocs, collection } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { writable } from 'svelte/store';
 
@@ -48,7 +48,7 @@ export const addUserDB = async () => {
     const userDocRef = doc(db, "users", userObj.uid);
     const userDocSnap = await getDoc(userDocRef);
     if (!userDocSnap.exists()) {
-        const docRef = setDoc(doc(db, "users", userObj.uid), { rank: "unrated", rating: 0, email: userObj.email, name: userObj.displayName });
+        const docRef = setDoc(doc(db, "users", userObj.uid), { rank: "unrated", rating: 0, email: userObj.email, name: userObj.displayName, numberOfRate: 0 });
     }
   } catch (error) {}
 };
@@ -83,3 +83,15 @@ export const logOut = () => {
     console.error("An error occurred during sign out: ", error);
   });
 };
+
+export const loadComments = async (userID) => {
+    let listOfComments = []
+    const querySnapshot = await getDocs(collection(db, "comments"));
+    querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    if (doc.data().onProfile == userID) {
+      listOfComments.push(doc.data());
+    }
+  });
+    return listOfComments; 
+}

@@ -3,13 +3,19 @@
     import { onMount } from 'svelte';
     import { userStore } from '../../firebaseClient';
     import { collection, addDoc, getDocs } from "firebase/firestore";
-    import { db } from '../../firebaseClient.js';
+    import { db, loadComments } from '../../firebaseClient.js';
 
 
     export let userID;
     let comment = '';
+    let stars = 0; 
     let charCount = 0;
     let listOfComments = [];
+    loadComments(userID).then((value) => {
+      listOfComments = value; 
+    }); 
+
+
     // The structure of the comments will be like so: 
     /**
      * Document ID: Random ID
@@ -18,13 +24,16 @@
      */
     async function addCommentDB() {
         try {
-            if (comment.length > 0 && comment.length <= 140) {
+            if ((comment.length > 0 && comment.length <= 140) && $userStore.uid != userID) {
                 const collectionRef = collection(db, "comments");
                 const docRef = await addDoc(collectionRef, {
                     writtenBy: $userStore.uid, 
                     onProfile: userID, 
                     userComment: comment,
                 });
+                location.reload();
+            } else {
+                alert("You can't post a comment on your own profile!"); 
             }
         } catch (error) {}
     };
@@ -35,39 +44,86 @@
     async function updateCounter() {
         charCount = comment.length;
     }
-
-    /**
-     * Function to load the comments on a user page
-     */
-    async function loadComments() {
-        const querySnapshot = await getDocs(collection(db, "comments"));
-        querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        if (doc.data().onProfile == userID) {
-            listOfComments.push(doc.data());
-        }
-        });
-    }
-    
-    onMount(async () => {
-        await loadComments();
-    });
 </script>
-
 
 <form>
     <div class="form-group">
         <textarea maxlength="140" bind:value={comment} on:input={updateCounter} class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Thoughts on this user? Limit of 140 characters"></textarea>
-        <button on:click={addCommentDB} type="submit" class="btn btn-primary mb-2">Post Comment</button>
+    </div>
+    <div class="sub-form">
         {charCount} characters
+        <button on:click={addCommentDB} type="submit" class="btn btn-primary mb-2">Post Comment</button>
     </div>
 </form>
 
 {#if listOfComments.length > 0}
   {#each listOfComments as comm}
-    {comm.writtenBy} <br />
-    {comm.userComment}
+  <div class="container">
+      <div class="comment-box">
+          <p class="text"> {comm.userComment} </p>
+      </div>
+  </div>
   {/each}
 {:else}
-  <p>No comments available.</p>
+  <div class="noFound">
+        <h1 class="title">No comments found</h1>
+    </div>
 {/if}
+
+
+<style type="text/css">
+    /*box-shadow: 0px 1px 20px black;*/
+    .title {
+        font-size: 24px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 40px;
+    }
+    textarea {
+        resize: none;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .sub-form {
+        display: flex;
+        justify-content: center;
+    }
+    .btn {
+        margin-left: 300px;
+    }
+
+    .form-group {
+        display: flex;
+        justify-content: center;
+    }
+    .form-control {
+        margin-top: 30px;
+        box-shadow: 0px 1px 20px black;
+        border-radius: 15px;
+        overflow-wrap: break-word;
+        height: 100px;
+        width: 500px; /* Adjust the width to your preference */
+        display: flex;
+    }
+    .comment-box {
+        margin: 30px;
+        box-shadow: 0px 1px 20px black;
+        border-radius: 15px;
+        overflow-wrap: break-word;
+        height: 100px;
+        width: 500px; /* Adjust the width to your preference */
+        display: flex;
+    }
+    .comment-box .text {
+        margin: auto;
+        max-width: 100%;
+        overflow: hidden;
+        text-align: center;
+        text-overflow: ellipsis;
+    }
+</style>

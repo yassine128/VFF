@@ -22,7 +22,7 @@
 						{$userStore.displayName}
 					</button>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="/profile">Profile</a>
+						<a class="dropdown-item" href="/profile/{$userStore.uid}">Profile</a>
 						<a class="dropdown-item" href="/settings">Settings</a>
 						<a class="dropdown-item" on:click={logOut}>Log-Out</a>
 					</div>
