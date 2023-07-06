@@ -8,7 +8,7 @@
 
     let rankDisplay = '';
     let ratingDisplay;
-    let emailDisplay; 
+    let nameDisplay; 
     let userFound = true; 
     
     async function searchUserByID() {
@@ -18,7 +18,7 @@
         if (docSnap.exists()) {
             rankDisplay = docSnap.get('rank');
             ratingDisplay = docSnap.get('rating');
-            emailDisplay = docSnap.get('email');
+            nameDisplay = docSnap.get('name');
         }
         else {
             userFound = false; 
@@ -30,69 +30,69 @@
 <Header />
 {#if userFound}
 <div class="profile-container">
-        <div class="left-section">
-            <img src="/{rankDisplay}_1_Rank.png" alt="rank logo">
-            <div class="rating">
-                {#if ratingDisplay >= 1}★{:else}☆{/if}
-                {#if ratingDisplay >= 2}★{:else}☆{/if}
-                {#if ratingDisplay >= 3}★{:else}☆{/if}
-                {#if ratingDisplay >= 4}★{:else}☆{/if}
-                {#if ratingDisplay >= 5}★{:else}☆{/if}
-            </div>
+    <div class="left-section">
+        <img src="/{rankDisplay}_1_Rank.png" alt="rank logo">
+    </div>
+    <div class="right-section">
+        <h2>{nameDisplay}</h2>
+        <div class="rating">
+            {#each Array.from({ length: 5 }) as _, i}
+                {#if ratingDisplay >= i+1}★{:else}☆{/if}
+            {/each}
         </div>
-        <div class="right-section">
-            <div style="height: 150px; background: #383838;"></div>
-            <img src="https://pfps.gg/assets/pfps/7620-reyna-mcdonald-s-pfp.png" alt="Profile Photo">
-            <h2>{emailDisplay}</h2>
-        </div>
+    </div>
 </div>
 <Comments {userID}/>
 
 <style>
     .profile-container {
-        font-family: Arial, sans-serif;
         background-color: #383838;
         color: white;
         padding: 20px;
         display: flex;
+        align-items: center; /* Center items vertically */
+        justify-content: center; /* Center items horizontally */
+        margin-left: auto;
+        margin-right: auto;
+        font-family: Impact, Charcoal, sans-serif;
+        color: #ff4655;
     }
 
     .left-section {
-        flex: 1;
-        padding-right: 20px;
-        border-right: 1px solid white;
-        flex-direction: column;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    .rating {
-        text-align: center;
-        font-size: 24px;  /* adjust as needed */
+        margin-right: 20px; /* Add spacing between the image and name */
     }
 
-    .right-section {
-        flex: 1;
-        padding-left: 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        bottom: 50rem;
-    }
-
-    .profile-container img {
+    .left-section img {
         width: 100px;
         height: 100px;
         object-fit: cover;
         border-radius: 50%;
-        margin-top: -50px;
+    }
+
+    .right-section {
+        display: flex;
+        flex-direction: column;
     }
 
     .profile-container h2 {
-        font-size: 16px;
+        font-size: 3em;
+        margin: 0; /* Remove default margin */
+    }
+
+    .rating {
+        font-size: 2em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .rating span {
+        margin-right: 2px; /* Adjust spacing between rating stars */
     }
 </style>
+
+
+
 
 {:else}
     <div class="noFound">
@@ -101,7 +101,6 @@
     </div>
 
     <style>
-
         .noFound {
             display: flex;
             flex-direction: column;

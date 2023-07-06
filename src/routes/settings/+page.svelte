@@ -9,27 +9,27 @@
 </script>
 
 <style>
-  main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-  }
-
   h1 {
-      color: #333;
-      margin-bottom: 20px;
+    position: absolute;
+		top: 20%;
+    left: 10%;
+    margin-bottom: 20px;
+    font-size: 5em;
+    font-family: Impact, Charcoal, sans-serif;
+    color: #ff4655;
   }
 
   .dropdown {
-      position: relative;
-      display: inline-block;
-      margin-bottom: 20px;
+    position: absolute;
+    display: inline-block;
+    margin-bottom: 20px;
+    font-family: Impact, Charcoal, sans-serif;
+    color: #ff4655;
   }
 
   .dropdown-content {
+      font-family: Impact, Charcoal, sans-serif;
+      color: #ff4655;
       display: none;
       position: absolute;
       background-color: #f1f1f1;
@@ -54,8 +54,9 @@
   }
 
   button {
+      position: absolute; 
       padding: 10px 20px;
-      background-color: #4CAF50;
+      background-color: #ff4655;
       color: white;
       border: none;
       cursor: pointer;
@@ -63,13 +64,22 @@
   }
 
   button:hover {
-      background-color: #45a049;
+      background-color: #aa2e38;
+  }
+
+  .save {
+    top: 40%;
+    left: 20%;
+  }
+  .dropdown {
+    top: 40%;
+    left: 10%;
   }
 </style>
 
 <Header />
 
-<main>
+<div class="back">
   <h1>Settings</h1>  
 
   <div class="dropdown">
@@ -78,10 +88,10 @@
     </button>
     <div class="dropdown-content" aria-labelledby="dropdownMenuButton">
       {#each ranks as rank}
-          <a class="dropdown-item" on:click={() => $userData[0] = rank}>{rank}</a>
+          <a class="dropdown-item drop" on:click={() => $userData[0] = rank}>{rank}</a>
       {/each}
     </div>
   </div>
 
-  <button on:click={saveRank}>Save</button>
-</main>
+  <button class="save" on:click={saveRank}>Save</button>
+</div>

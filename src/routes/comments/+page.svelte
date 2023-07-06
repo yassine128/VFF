@@ -51,7 +51,7 @@
         <textarea maxlength="140" bind:value={comment} on:input={updateCounter} class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Thoughts on this user? Limit of 140 characters"></textarea>
     </div>
     <div class="sub-form">
-        {charCount} characters
+        <p>{charCount} characters</p>
         <button on:click={addCommentDB} type="submit" class="btn btn-primary mb-2">Post Comment</button>
     </div>
 </form>
@@ -93,11 +93,18 @@
         display: flex;
         justify-content: center;
     }
+    .sub-form p {
+        font-family: Impact, Charcoal, sans-serif;
+    }
+    .sub-form button {
+        font-family: Impact, Charcoal, sans-serif;
+        background-color: #ff4655;
+    }
     .btn {
         margin-left: 300px;
     }
-
     .form-group {
+        font-family: Impact, Charcoal, sans-serif;
         display: flex;
         justify-content: center;
     }
@@ -120,6 +127,7 @@
         display: flex;
     }
     .comment-box .text {
+        font-family: Impact, Charcoal, sans-serif;
         margin: auto;
         max-width: 100%;
         overflow: hidden;
